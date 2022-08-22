@@ -7,6 +7,15 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """
+    This procedure processes a song file whose filepath has been provided as an arugment.
+    It extracts the song information in order to store it into the songs table.
+    Then it extracts the artist information in order to store it into the artists table.
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the song file
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -29,18 +38,18 @@ def process_log_file(cur, filepath):
 
     # convert timestamp column to datetime
     
-    df.loc[:,("ts")] = df.loc[:,("ts")].apply(lambda x: pd.to_datetime(x, unit='ms'))
-    df['year'] = df['ts'].dt.year
-    df['hour'] = df['ts'].dt.hour
-    df['day'] = df['ts'].dt.day
-    df['week'] = df['ts'].dt.week
-    df['month'] = df['ts'].dt.month
-    df['weekday'] = df['ts'].dt.weekday
-    # insert time data records
-    time_data = [df.ts.values, df.hour.values, df.day.values, df.week.values, df.month.values, df.year.values, df.weekday.values]
-    column_labels = ['start_time', 'hour', 'day','week', 'month', 'year', 'weekday']
-    time_df = pd.DataFrame(dict(zip(column_labels, time_data)))
+    #df["time"] = df.loc[:,("ts")].apply(lambda x: pd.to_datetime(x, unit='ms'))
+    t = pd.to_datetime(df['ts'], unit='ms')
 
+    time_data = [df.ts.values, t.dt.hour.values, t.dt.day.values,
+                 t.dt.weekofyear.values, t.dt.month.values, t.dt.year.values,
+                 t.dt.weekday.values]
+    column_labels = ['start_time', 'hour', 'day',
+                     'week', 'month', 'year', 'weekday']
+    data=dict(zip(column_labels, time_data))
+    #print(data)
+    time_df = pd.DataFrame(data)
+    
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
 
