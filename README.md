@@ -15,3 +15,9 @@ Data from the 'data/song_data' in JSON format are extracted, transformed, and lo
 The "data/log_data" file, which contains processed data from the JSON log files, is what is used to fill the "time" and "users" tables.
 In order to fill the **songplays** fact table, a 'SELECT' query gathers song and artist id from the **songs** and **artists** tables and combines this with log file derived data. 
 
+## How To Run the Project
+
+First you have to make sure that postgresql server is running on your machine.
+
+Then you can run `create_tables.py` to create the needed tables.
+After that run `etl.py` to feed the tables with data.
