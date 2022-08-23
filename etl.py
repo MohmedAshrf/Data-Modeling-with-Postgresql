@@ -30,6 +30,16 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    This procedure processes a log file whose filepath has been provided as an arugment.
+    It extracts the logs data to store it into the tables.
+    Then it extracts the time and user information in order to store it into the tables.
+    and then use the data to create the fact table
+
+    INPUTS: 
+    * cur the cursor variable
+    * filepath the file path to the log file
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -79,6 +89,14 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    This procedure processes a file and get all the files in it then
+    iterate over files to apply the function to each one.
+    INPUTS: 
+    * cur the cursor variable.
+    * conn the connection to the database
+    * filepath the file path to the log file
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
