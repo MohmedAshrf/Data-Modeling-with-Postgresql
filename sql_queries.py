@@ -52,9 +52,9 @@ artist_table_create = ("""
 
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS time (
+        start_time BIGINT PRIMARY KEY,
         weekday INT,
         hour INT,
-        start_time BIGINT PRIMARY KEY,
         month INT,
         week INT,
         year INT,
@@ -88,7 +88,7 @@ artist_table_insert = ("""
 """)
 
 time_table_insert = ("""
-    INSERT INTO time (weekday,hour, month,start_time,week ,day,year)
+    INSERT INTO time (start_time,hour, day,week,month ,year,weekday)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT DO NOTHING;
 """)
